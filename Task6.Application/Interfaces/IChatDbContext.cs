@@ -3,7 +3,7 @@ using Task6.Domain;
 
 namespace Task6.Application.Interfaces;
 
-public interface IUserDbContext
+public interface IChatDbContext
 {
     DbSet<User> Users { get; set; }
     DbSet<Message> Messages { get; set; }

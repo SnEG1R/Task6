@@ -4,12 +4,12 @@ using Task6.Domain;
 
 namespace Task6.Persistence.Contexts;
 
-public sealed class UserDbContext : DbContext, IUserDbContext
+public sealed class ChatDbContext : DbContext, IChatDbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Message> Messages { get; set; }
 
-    public UserDbContext(DbContextOptions<UserDbContext> options) 
+    public ChatDbContext(DbContextOptions<ChatDbContext> options) 
         : base(options)
     {
         Database.EnsureCreated();
