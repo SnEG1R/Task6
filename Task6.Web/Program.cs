@@ -1,6 +1,11 @@
+using Task6.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddPersistence(configuration);
 
 var app = builder.Build();
 
