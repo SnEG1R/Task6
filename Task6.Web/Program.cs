@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Task6.Application;
 using Task6.Persistence;
 
@@ -9,6 +10,12 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddApplication();
 builder.Services.AddPersistence(configuration);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+    });
 
 var app = builder.Build();
 
@@ -23,6 +30,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
