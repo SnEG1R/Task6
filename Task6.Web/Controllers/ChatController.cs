@@ -2,7 +2,7 @@
 
 namespace Task6.Web.Controllers;
 
-public class HomeController : Controller
+public class ChatController : Controller
 {
     public IActionResult Index()
     {
