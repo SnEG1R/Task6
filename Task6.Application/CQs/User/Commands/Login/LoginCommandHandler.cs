@@ -20,7 +20,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ClaimsIdentity>
         var user = await _chatDbContext.Users
             .FirstOrDefaultAsync(u => u.Name == request.Name,
                 cancellationToken: cancellationToken);
-        
+
         if (user is null)
         {
             user = new Domain.User()
@@ -31,13 +31,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ClaimsIdentity>
             await _chatDbContext.Users.AddAsync(user, cancellationToken);
             await _chatDbContext.SaveChangesAsync(cancellationToken);
         }
-        
+
         var claims = new List<Claim>
         {
             new(ClaimsIdentity.DefaultNameClaimType, user.Name),
         };
-        
-        var identity = new ClaimsIdentity(claims, "ApplicationCookie", 
+
+        var identity = new ClaimsIdentity(claims, "ApplicationCookie",
             ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
         return identity;

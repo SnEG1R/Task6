@@ -1,14 +1,34 @@
+using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Task6.Application.CQs.Message.Commands.CreateMessage;
+using Task6.Application.Interfaces;
+using Task6.Domain;
 
 namespace Task6.Application.Hubs.Message;
 
 public class ChatHub : Hub
 {
-    public async Task Send(string w)
+    private readonly IChatDbContext _chatDbContext;
+    private readonly IMediator _mediator;
+
+    public ChatHub(IChatDbContext chatDbContext, IMediator mediator)
     {
-        var t = Context.ConnectionId;
-        var a = Context.UserIdentifier;
-        await Clients.All.SendAsync("Send", w); 
+        _chatDbContext = chatDbContext;
+        _mediator = mediator;
+    }
+
+    public async Task Send(CreateMessageCommand messageCommand)
+    {
+        var recipient = await _chatDbContext.Users
+            .FirstOrDefaultAsync(u => u.Name == messageCommand.RecipientName);
+        if (recipient == null)
+            throw new NullReferenceException($"{nameof(recipient)} is null");
+
+        var message = await _mediator.Send(messageCommand);
+
+        await Clients.User(recipient.Name)
+            .SendAsync("GetMessage", message);
     }
 }

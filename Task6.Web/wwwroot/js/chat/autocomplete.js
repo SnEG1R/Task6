@@ -2,10 +2,6 @@ let nameInput = document.getElementById('name-input');
 let res = document.getElementById("result");
 let search_terms = [];
 
-window.onload = async function () {
-    search_terms = await getAllName();
-}
-
 function autocompleteMatch(input) {
     res.hidden = false;
     if (input === '') {

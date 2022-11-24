@@ -9,15 +9,3 @@ async function getAllName() {
 
     return names;
 }
-
-async function getUserMessage() {
-    let messages = [];
-
-    let response = await fetch('Chat/GetUserMessages/');
-
-    await response.json().then(function (value) {
-        messages = value;
-    });
-
-    return messages;
-}
