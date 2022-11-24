@@ -17,6 +17,7 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connectionString);
         });
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         services.AddScoped<IChatDbContext, ChatDbContext>();
 

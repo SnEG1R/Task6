@@ -7,4 +7,5 @@ namespace Task6.Application.CQs.User.Commands.Login;
 public class LoginCommand : IRequest<ClaimsIdentity>
 {
     public string Name { get; set; }
+    public string ConnectionId { get; set; }
 }

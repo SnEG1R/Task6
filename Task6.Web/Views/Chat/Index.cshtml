@@ -1,1 +1,93 @@
-﻿
+﻿@model IEnumerable<MessageDto>
+
+<link rel="stylesheet" href="~/css/autocomplete.css">
+
+<div class="d-flex" style="height: 100vh">
+    <div style="width: 90%; margin: 10px">
+        <h3>All message</h3>
+        <div class="message-container">
+            @foreach (var messageData in Model)
+            {
+                <div class="list-group mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
+                    <div onclick="openMessage(this)" class="list-group-item list-group-item-action" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 title-message">@messageData.Header</h6>
+                            <small class="date-send-message">@messageData.DateSend.ToString("MM/dd/yyyy H:mm")</small>
+                        </div>
+                        <p class="mb-1 sender-message">@messageData.SenderName</p>
+                        <div class="body-message" hidden="hidden">@messageData.Body</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+        <div style="width: 90%">
+            <lable>User</lable>
+            <div class="input-autocomplete-container">
+                <input id="name-input" class="form-control mb-2" type="text" onkeyup="showResults(this.value)">
+                <div class="w-100" hidden="hidden" id="result"></div>
+            </div>
+            <lable>Header</lable>
+            <input id="header-input" class="form-control mb-2" type="text">
+            <lable>Body</lable>
+            <textarea class="form-control mb-2" id="body-input" rows="3"></textarea>
+
+            <button id="send" type="button" class="btn btn-success w-100">Send</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="" style="font-weight: 600">Modal title</h5>
+                    <div class="modal-sender">Wdeffrgtgr</div>
+                    <div class="modal-data">20.20.20</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+window.onload = async function () {
+    await hubConnection.start();
+    search_terms = await getAllName();
+}
+</script>
+<script src="~/js/chat/chat.api.js"></script>
+<script src="~/js/chat/message.js"></script>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/chat/connection.hub.js"></script>
+<script src="~/js/chat/autocomplete.js"></script>
+<script>
+let inputName = document.getElementById('name-input');
+let inputHeader = document.getElementById('header-input');
+let inputBody = document.getElementById('body-input');
+let btnSend = document.getElementById('send');
+btnSend.disabled = true;
+
+inputName.addEventListener('keyup', () => {
+    checkValidation();
+});
+inputHeader.addEventListener('keyup', () => {
+    checkValidation();
+});
+inputBody.addEventListener('keyup', () => {
+    checkValidation();
+});
+
+function checkValidation() {
+    btnSend.disabled = inputName.value === '' || 
+    inputHeader.value === '' ||
+    inputBody.value === '';
+}
+</script>

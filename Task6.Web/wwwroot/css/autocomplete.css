@@ -1,0 +1,27 @@
+#result {
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+    position: absolute;
+    background-color: #f4f4f4;
+    padding: 3px;
+}
+#result ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#result ul li {
+    padding: 5px 0;
+}
+#result ul li:hover {
+    background: #eee;
+}
+
+.input-autocomplete-container {
+    position: relative;
+}
+
+.message-container {
+    height: 90vh;
+    overflow-x: hidden;
+}
