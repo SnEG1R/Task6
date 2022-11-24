@@ -31,7 +31,7 @@ public class CreateMessageCommandHandler
             Owner = user,
             Header = request.Header,
             Body = request.Body,
-            DateSend = DateTime.UtcNow,
+            DateSend = DateTime.Now,
             RecipientName = request.RecipientName
         };
 

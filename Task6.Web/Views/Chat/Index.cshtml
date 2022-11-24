@@ -12,7 +12,7 @@
                     <div onclick="openMessage(this)" class="list-group-item list-group-item-action" aria-current="true">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-1 title-message">@messageData.Header</h6>
-                            <small class="date-send-message">@messageData.DateSend.ToLongDateString()</small>
+                            <small class="date-send-message">@messageData.DateSend.ToString("MM/dd/yyyy H:mm")</small>
                         </div>
                         <p class="mb-1 sender-message">@messageData.SenderName</p>
                         <div class="body-message" hidden="hidden">@messageData.Body</div>
@@ -68,3 +68,26 @@ window.onload = async function () {
 <script src="~/lib/signalr/signalr.js"></script>
 <script src="~/js/chat/connection.hub.js"></script>
 <script src="~/js/chat/autocomplete.js"></script>
+<script>
+let inputName = document.getElementById('name-input');
+let inputHeader = document.getElementById('header-input');
+let inputBody = document.getElementById('body-input');
+let btnSend = document.getElementById('send');
+btnSend.disabled = true;
+
+inputName.addEventListener('keyup', () => {
+    checkValidation();
+});
+inputHeader.addEventListener('keyup', () => {
+    checkValidation();
+});
+inputBody.addEventListener('keyup', () => {
+    checkValidation();
+});
+
+function checkValidation() {
+    btnSend.disabled = inputName.value === '' || 
+    inputHeader.value === '' ||
+    inputBody.value === '';
+}
+</script>

@@ -22,7 +22,8 @@ public class GetMessagesUserHandler : IRequestHandler<GetMessagesUser, MessageVm
     {
         var messages = _chatDbContext.Messages
             .Where(m => m.RecipientName == request.UserName)
-            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
+            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+            .OrderByDescending(m => m.DateSend);
 
         return Task.FromResult(new MessageVm() { Messages = messages });
     }

@@ -1,10 +1,8 @@
-using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Task6.Application.CQs.Message.Commands.CreateMessage;
 using Task6.Application.Interfaces;
-using Task6.Domain;
 
 namespace Task6.Application.Hubs.Message;
 

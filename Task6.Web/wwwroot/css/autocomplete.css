@@ -20,3 +20,8 @@
 .input-autocomplete-container {
     position: relative;
 }
+
+.message-container {
+    height: 90vh;
+    overflow-x: hidden;
+}
