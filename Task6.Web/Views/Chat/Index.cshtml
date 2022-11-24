@@ -1,1 +1,76 @@
-﻿
+﻿@model IEnumerable<MessageDto>
+
+<link rel="stylesheet" href="~/css/autocomplete.css">
+
+<div class="d-flex" style="height: 100vh">
+    <div style="width: 90%; margin: 10px">
+        <h3>All message</h3>
+        @foreach (var messageData in Model)
+        {
+            <div class="list-group" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
+                <div onclick="openMessage(this)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1 title-message">@messageData.Header</h6>
+                        <small class="date-send-message">@messageData.DateSend.ToLongDateString()</small>
+                    </div>
+                    <p class="mb-1 sender-message">@messageData.SenderName</p>
+                    <div class="body-message" hidden="hidden">@messageData.Body</div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+        <div style="width: 90%">
+            <lable>User</lable>
+            <div class="input-autocomplete-container">
+                <input id="name-input" class="form-control mb-2" type="text" onkeyup="showResults(this.value)">
+                <div class="w-100" hidden="hidden" id="result"></div>
+            </div>
+            <lable>Header</lable>
+            <input class="form-control mb-2" type="text">
+            <lable>Body</lable>
+            <textarea class="form-control mb-2" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+            <button id="send" type="button" class="btn btn-success w-100">Send</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="" style="font-weight: 600">Modal title</h5>
+                    <div class="modal-sender">Wdeffrgtgr</div>
+                    <div class="modal-data">20.20.20</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/chat/chat.api.js"></script>
+<script src="~/js/chat/message.js"></script>
+<script src="~/js/chat/autocomplete.js"></script>
+<script src="~/lib/signalr/signalr.js"></script>
+<script>
+const hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/chat-hub")
+                .build();
+
+hubConnection.on("Send", function (message) {
+    console.log(message)
+});
+
+document.getElementById("send").addEventListener("click", function (e) {
+    hubConnection.invoke("Send", "wwww");
+});
+
+hubConnection.start();
+</script>
