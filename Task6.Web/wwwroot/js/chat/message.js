@@ -31,9 +31,9 @@ async function SendMessage() {
 function setMessageToList(message) {
     let messageContainer = document.querySelector('.message-container');
 
-    let html = `
+    let messageHtml = `
                 <div class="list-group mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
-                    <div onclick="openMessage(this)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div onclick="openMessage(this);removeMessageHighlight(this)" class="bg-success text-white list-group-item list-group-item-action" aria-current="true">
                         <div class="d-flex w-100 justify-content-between">
                         <h6 class="mb-1 title-message">${message.header}</h6>
                         <small class="date-send-message">${message.dateSend}</small>
@@ -43,6 +43,14 @@ function setMessageToList(message) {
                     </div>
                 </div>
                 `;
+    
+    let messagesHtml = messageContainer.innerHTML;
 
-    messageContainer.innerHTML += html;
+    messageHtml += messagesHtml;
+    messageContainer.innerHTML = messageHtml;
+}
+
+function removeMessageHighlight(message) {
+    message.classList.remove("bg-success");
+    message.classList.remove("text-white");
 }
