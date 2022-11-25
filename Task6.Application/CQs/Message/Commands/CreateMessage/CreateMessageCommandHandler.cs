@@ -5,7 +5,7 @@ using Task6.Application.Interfaces;
 
 namespace Task6.Application.CQs.Message.Commands.CreateMessage;
 
-public class CreateMessageCommandHandler 
+public class CreateMessageCommandHandler
     : IRequestHandler<CreateMessageCommand, ReturnMessageDto>
 {
     private readonly IChatDbContext _chatDbContext;
@@ -31,7 +31,7 @@ public class CreateMessageCommandHandler
             Owner = user,
             Header = request.Header,
             Body = request.Body,
-            DateSend = DateTime.Now,
+            DateSend = DateTimeOffset.Now.DateTime.AddHours(3),
             RecipientName = request.RecipientName
         };
 
