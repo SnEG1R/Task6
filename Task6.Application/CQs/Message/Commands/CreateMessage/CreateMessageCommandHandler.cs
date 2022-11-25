@@ -22,7 +22,7 @@ public class CreateMessageCommandHandler
     {
         var user = await _chatDbContext.Users
             .FirstOrDefaultAsync(u => u.Name
-                                      == request.RecipientName, cancellationToken);
+                                      == request.Owner, cancellationToken);
         if (user is null)
             throw new NullReferenceException($"{nameof(user)} is null");
 

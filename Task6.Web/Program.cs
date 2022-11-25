@@ -1,3 +1,4 @@
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Task6.Application;
@@ -24,6 +25,15 @@ builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
     config.AddProfile(new AssemblyMappingProfile(typeof(IChatDbContext).Assembly));
+});
+
+builder.WebHost.ConfigureKestrel(config =>
+{
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+    {
+        config.Listen(IPAddress.Any, Convert.ToInt32(
+            Environment.GetEnvironmentVariable("PORT")));
+    }
 });
 
 var app = builder.Build();
