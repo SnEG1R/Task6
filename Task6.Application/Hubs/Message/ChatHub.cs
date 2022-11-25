@@ -24,6 +24,8 @@ public class ChatHub : Hub
         if (recipient == null)
             throw new NullReferenceException($"{nameof(recipient)} is null");
 
+        messageCommand.Owner = Context.User?.Identity?.Name!;
+
         var message = await _mediator.Send(messageCommand);
 
         await Clients.User(recipient.Name)

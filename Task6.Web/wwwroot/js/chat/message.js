@@ -37,10 +37,10 @@ function setMessageToList(message) {
                 <div class="list-group mb-1" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
                     <div onclick="openMessage(this);removeMessageHighlight(this)" class="bg-success text-white list-group-item list-group-item-action" aria-current="true">
                         <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1 title-message">${message.header}</h6>
+                        <h6 class="mb-1 title-message">Header: ${message.header}</h6>
                         <small class="date-send-message">${dateSend}</small>
                         </div>
-                        <p class="mb-1 sender-message">${message.sender}</p>
+                        <p class="mb-1 sender-message">Sender: ${message.sender}</p>
                         <div class="body-message" hidden="hidden">${message.body}</div>
                     </div>
                 </div>
