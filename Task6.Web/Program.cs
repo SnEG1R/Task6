@@ -1,6 +1,40 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Net;
+using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Task6.Application;
+using Task6.Application.Common.Mappings;
+using Task6.Application.Hubs.Message;
+using Task6.Application.Interfaces;
+using Task6.Persistence;
 
-builder.Services.AddControllersWithViews();
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.Services.AddControllersWithViews()
+    .AddRazorRuntimeCompilation();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddApplication();
+builder.Services.AddPersistence(configuration);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => { options.LoginPath = "/Login/Index"; });
+
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+    config.AddProfile(new AssemblyMappingProfile(typeof(IChatDbContext).Assembly));
+});
+
+builder.WebHost.ConfigureKestrel(config =>
+{
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+    {
+        config.Listen(IPAddress.Any, Convert.ToInt32(
+            Environment.GetEnvironmentVariable("PORT")));
+    }
+});
 
 var app = builder.Build();
 
@@ -15,10 +49,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Login}/{action=Index}/{id?}");
+
+    endpoints.MapHub<ChatHub>("/chat-hub");
+});
 
 app.Run();
